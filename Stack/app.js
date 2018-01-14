@@ -1,34 +1,36 @@
-var Stack = function () {
-    this.storage = "";
+function Stack(capacity) {
+  this.capacity = capacity || Infinity;
+  this.storage = {};
+  this.count = 0;
+}
+
+Stack.prototype.push = function(value) {
+  if (this.count < this.capacity) {
+    this.storage[this.count] = value;
+    this.count = this.count + 1;
+    return this.count;
+  } else {
+    return "Max capacity already reached. Remove element before adding a new one.";
+  }
 };
 
-Stack.prototype.push = function (val) {
-    if (typeof val === "string") {
-      this.storage +=  "***" + val;
-      return this.storage.length;
-    } else {
-      console.log('you can only push strings');
-    }
+
+Stack.prototype.pop = function() {
+  this.count = this.count - 1;
+  var element = this.storage[this.count];
+  delete this.storage[this.count];
+  if (this.count < 0){
+    this.count = 0;
+  }
+  return element;
 };
 
-Stack.prototype.pop = function () {
-    //slice off the last characters up until ***
-    var str = this.storage.slice(this.storage.lastIndexOf('***') + 3);
-    //updating the new stack without the last item
-    this.storage = this.storage.substring(0, this.storage.lastIndexOf('***'));
-    //return the last item
-    return str;
+
+Stack.prototype.peek = function() {
+  return this.storage[this.count-1];
 };
 
-Stack.prototype.size = function () {
-      if (this.storage){
-          return this.storage.length;
-      } else {
-        return 'storage is empty';
-      }
 
+Stack.prototype.size = function() {
+  return this.count;
 };
-
-var myWeeklyMenu = new Stack();
-
-myWeeklyMenu.push("RedBeans");
